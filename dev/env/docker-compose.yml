@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgis/postgis:latest
+    environment:
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: global_warfront
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+      - ./seeds:/seeds
+    restart: unless-stopped
+
+  pgadmin:
+    image: adminer
+    environment:
+      ADMINER_DESIGN: price
+    ports:
+      - "5050:8080"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
